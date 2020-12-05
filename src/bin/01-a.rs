@@ -1,10 +1,8 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
+use aoc2020::create_input_reader;
 
 fn main() {
-    let filename = std::env::args().nth(1).expect("Must pass filename.");
-    let file = File::open(filename).expect("Could not open file.");
-    let mut reader = BufReader::new(file);
+    let reader = create_input_reader();
 
     let numbers: Vec<i32> = reader.lines().map(|line| line.unwrap().parse::<i32>().unwrap()).collect();
     let mut number_exists: [bool; 2021] = [false; 2021];

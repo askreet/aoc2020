@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use regex::{Regex, Captures};
+use regex::{Regex};
 
 #[derive(Debug, PartialEq, Eq)]
 struct PasswordPolicy {
@@ -84,7 +84,7 @@ fn test_parser() {
 fn main() {
     let filename = std::env::args().nth(1).expect("Must pass filename.");
     let file = File::open(filename).expect("Could not open file.");
-    let mut reader = BufReader::new(file);
+    let reader = BufReader::new(file);
 
     let mut count_valid = 0;
 
