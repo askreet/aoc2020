@@ -24,4 +24,4 @@ macro_rules! regex_captures {
 
 pub mod aoc_03;
 pub mod aoc_04;
-
+pub mod aoc_05;
