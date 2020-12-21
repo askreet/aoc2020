@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 #[derive(Clone, PartialEq, Eq, Debug)]
 struct SeatRange {
     lower: u32,

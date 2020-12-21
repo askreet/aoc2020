@@ -3,6 +3,7 @@ use lazy_static::lazy_static;
 use regex::{Regex};
 use enum_from_str::ParseEnumVariantError;
 use enum_from_str_derive::FromStr;
+use crate::RecordReader;
 
 #[derive(Default, Clone, PartialEq, Eq, Debug)]
 pub struct Passport {
@@ -120,36 +121,6 @@ impl PassportID {
 #[allow(non_camel_case_types)]
 enum EyeColor { amb, blu, brn, gry, grn, hzl, oth }
 
-struct RecordReader<T: BufRead> {
-    reader: T,
-}
-
-impl<T: BufRead> RecordReader<T> {
-    fn new(reader: T) -> RecordReader<T> {
-        RecordReader { reader }
-    }
-}
-
-impl<T: BufRead> Iterator for RecordReader<T> {
-    type Item = String;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let mut buf = String::new();
-
-        loop {
-            match self.reader.read_line(&mut buf) {
-                Ok(bytes) =>
-                    match (bytes, buf.is_empty()) {
-                        (0, true) => return None, // EOF, no pending record.
-                        (0, false) => return Some(buf), // EOF, pending record.
-                        (1, _) => return Some(buf), // Blank line = end of record.
-                        _ => {}
-                    },
-                Err(e) => panic!(e),
-            }
-        }
-    }
-}
 
 pub fn parse_passports<T: BufRead>(reader: T) -> Vec<Passport> {
     lazy_static! {
