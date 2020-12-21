@@ -12,8 +12,7 @@ pub struct BagRule {
 pub fn parse_rules<T: BufRead>(input: T) -> Vec<BagRule> {
     let mut result = Vec::new();
 
-    input.lines().for_each(|line| {
-    });
+    input.lines().for_each(|line| {});
 
     result
 }
@@ -22,13 +21,13 @@ fn parse_rule(input: String) -> BagRule {
     let bag = regex_captures!(r"^(\w+ \w+) bags", &input).unwrap()[1].to_string();
 
 
-    // let Some(contents) = regex_captures!(r"(\d+) (\w+ \w+) bags?", input);
+    let bag_re: Regex = Regex::new(r"(\d+) (\w+ \w+) bags?").unwrap();
 
-    // dbg!(&contents);
-    
     BagRule {
-        desc: "".to_string(),
-        can_hold: Default::default()
+        desc: bag,
+        can_hold: bag_re.captures_iter(&input)
+            .map(|c| (c[2].to_string(), c[1].parse::<u8>().unwrap()) )
+            .collect(),
     }
 }
 
@@ -38,7 +37,7 @@ fn test_parse_rule() {
         parse_rule("shiny aqua bags contain 1 dark white bag.\n".to_string()),
         BagRule {
             desc: "shiny aqua".to_string(),
-            can_hold: hashmap! { "dark white".to_string() => 1 }
+            can_hold: hashmap! { "dark white".to_string() => 1 },
         }
     );
 
@@ -50,7 +49,7 @@ fn test_parse_rule() {
                 "wavy indigo".to_string() => 1,
                 "bright black".to_string() => 3,
                 "dotted teal".to_string() => 3,
-            }
+            },
         }
     );
 
@@ -58,7 +57,7 @@ fn test_parse_rule() {
         parse_rule("dull silver bags contain no other bags.".to_string()),
         BagRule {
             desc: "dull silver".to_string(),
-            can_hold: hashmap! {}
+            can_hold: hashmap! {},
         }
     );
 }
