@@ -1,8 +1,10 @@
 extern crate enum_from_str;
-#[macro_use] extern crate maplit;
+#[cfg(test)]
+#[macro_use]
+extern crate maplit;
 
-use std::io::{BufReader, BufRead};
 use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 pub fn create_input_reader() -> BufReader<File> {
     let filename = std::env::args().nth(1).expect("Must pass filename.");
@@ -59,3 +61,4 @@ pub mod aoc_04;
 pub mod aoc_05;
 pub mod aoc_06;
 pub mod aoc_07;
+pub mod aoc_08;

@@ -1,5 +1,6 @@
-use itertools::{Itertools, assert_equal};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
+
+use itertools::Itertools;
 
 pub fn unique_chars(input: &str) -> Vec<char> {
     input.chars().unique().filter(|c| *c != '\n').collect()
@@ -12,7 +13,7 @@ pub fn all_answered_yes(input: &str) -> HashSet<char> {
 
     line_reader
         .filter(|line| *line != "")
-        .fold(init, |mut a, e| a.intersection(&e.chars().collect()).copied().collect())
+        .fold(init, |a, e| a.intersection(&e.chars().collect()).copied().collect())
 }
 
 #[test]
